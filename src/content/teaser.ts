@@ -47,31 +47,31 @@ export const teaser = {
       href: "#how-it-works",
     } satisfies Link,
     // Every slide is taller than its window and scrolls once it is showing, all
-    // at the same speed (about 53px a second at full width). `scroll` holds that
-    // timing: total = scroll time + a 3s hold, and each keyframe name in
-    // globals.css stops scrolling at (scroll time / total). The first slide
-    // waits 2s after the page loads; the others wait 1.5s after they appear.
+    // at the same speed (about 53px a second at full width), so each has its own
+    // scroll time. When it reaches the bottom the carousel moves to the next
+    // slide. The first slide waits 2s after the page loads; the others wait
+    // 1.5s after they appear.
     slides: [
       {
         src: "/teaser/hero-setup.webp",
         width: 1359,
         height: 1177,
         alt: 'The Keel setup screen for Raft Design, headed "Here\'s what I found." It lists the logo, company description, colors, typography and brand character found on raftdesign.studio, each with its source, and has Save and continue and Scan again buttons.',
-        scroll: { name: "hero-setup-scroll", total: "10.1s", delay: "2s" },
+        scroll: { total: "7.1s", delay: "2s" },
       },
       {
         src: "/teaser/hero-workspace.webp",
         width: 1359,
         height: 888,
         alt: 'The Keel workspace for Raft Design. The Overview shows "Your first brand draft is ready" and 3 of 4 sections ready, with Brand foundation, Visual identity and Voice marked Ready and Assets marked Missing. A Raft Assistant panel on the right proposes a revised company description with Apply change and Keep current buttons.',
-        scroll: { name: "hero-workspace-scroll", total: "6.2s", delay: "1.5s" },
+        scroll: { total: "3.2s", delay: "1.5s" },
       },
       {
         src: "/teaser/hero-brand-guide.webp",
         width: 1359,
         height: 1545,
         alt: "A published Keel brand guide for Raft Design, showing the company overview, brand foundation, voice, logos, colors, typography and assets on a single shareable page.",
-        scroll: { name: "hero-guide-scroll", total: "15s", delay: "1.5s" },
+        scroll: { total: "12s", delay: "1.5s" },
       },
     ],
     carouselLabel: "Product previews",

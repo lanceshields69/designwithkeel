@@ -17,8 +17,8 @@ import { teaser } from "@/content/teaser"
 // it is showing, all at the same speed (see .hero-guide-scroll in globals.css
 // and the `scroll` timing on each slide in content/teaser.ts). The first waits
 // 2 seconds after the page loads, the others 1.5 seconds after they appear.
-// When a preview finishes scrolling (and its 3 second hold at the bottom), the
-// carousel moves on to the next one, and back to the first after the last.
+// When a preview reaches the bottom, the carousel moves straight on to the next
+// one, and back to the first after the last.
 // Hovering over the carousel or focusing inside it pauses everything. Reduced
 // motion switches the scrolling off, so nothing rotates by itself.
 function HeroCarousel() {
@@ -76,7 +76,6 @@ function HeroCarousel() {
               data-active={settled === index}
               style={
                 {
-                  "--hero-scroll-name": slide.scroll.name,
                   "--hero-scroll-total": slide.scroll.total,
                   "--hero-scroll-delay": slide.scroll.delay,
                 } as React.CSSProperties
