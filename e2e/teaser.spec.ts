@@ -299,13 +299,12 @@ test.describe("hero carousel", () => {
   })
 
   // Every preview scrolls at the same speed, about 53px a second. Each one
-  // scrolls for its own length of time, then holds for 3s, then runs once and
-  // stops. The first waits 2s after the page loads; the others 1.5s after they
-  // appear.
+  // scrolls for its own length of time, then runs once and stops at the bottom.
+  // The first waits 2s after the page loads; the others 1.5s after they appear.
   const timings = [
-    { n: 1, name: "hero-setup-scroll", total: "10.1s", delay: "2s" },
-    { n: 2, name: "hero-workspace-scroll", total: "6.2s", delay: "1.5s" },
-    { n: 3, name: "hero-guide-scroll", total: "15s", delay: "1.5s" },
+    { n: 1, total: "7.1s", delay: "2s" },
+    { n: 2, total: "3.2s", delay: "1.5s" },
+    { n: 3, total: "12s", delay: "1.5s" },
   ]
   for (const t of timings) {
     test(`preview ${t.n} scrolls after a ${t.delay} pause`, async ({
@@ -323,7 +322,7 @@ test.describe("hero carousel", () => {
         const s = getComputedStyle(el)
         return [s.animationName, s.animationDuration, s.animationDelay]
       })
-      expect(style).toEqual([t.name, t.total, t.delay])
+      expect(style).toEqual(["hero-guide-scroll", t.total, t.delay])
     })
   }
 
