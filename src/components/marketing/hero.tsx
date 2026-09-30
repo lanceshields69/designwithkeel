@@ -20,13 +20,11 @@ function Hero() {
         sizes="100vw"
         className="-z-10 object-cover opacity-60"
       />
-      {/* The Keel "D" mark on the water, top right. Decorative. */}
-      <Image
-        src="/teaser/hero-mark.webp"
-        alt=""
-        width={104}
-        height={106}
-        className="pointer-events-none absolute top-[69px] right-[4.6%] hidden lg:block"
+      {/* The Keel symbol on the water, top right. Decorative: the SVG is an
+          alpha mask filled with green 500 at 50% opacity. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute top-[69px] right-[4.6%] hidden h-[106px] w-[104px] bg-[var(--hero-mark)] [mask-image:url(/teaser/keel-symbol.svg)] [mask-size:100%_100%] [mask-repeat:no-repeat] opacity-50 lg:block"
       />
       <Container className="max-w-5xl">
         <div className="flex flex-col items-center text-center">

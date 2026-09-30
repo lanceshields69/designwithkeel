@@ -29,6 +29,7 @@
 
   /* ---- Primitives: brand green (Figma theme/brand) ---- */
   --primitive-brand-200: oklch(0.982 0.018 155.8); /* #f0fdf4 */
+  --primitive-brand-500: oklch(0.7227 0.192 149.58); /* #22c55e */
   --primitive-brand-700: oklch(0.527 0.137 150.1); /* #15803d */
   --primitive-brand-800: oklch(0.4479 0.1083 151.3277); /* #166534 */
 
@@ -50,6 +51,9 @@
   /* Primary is brand/700 (5.0:1 with white). Figma may still resolve it to
      brand/600 (3.3:1, fails); the code follows 700. See ADR 0003. */
   --primary: var(--primitive-brand-700);
+  /* Decorative only (the Keel symbol over the hero photo). Green 500 fails
+     contrast for text and buttons, so it is not used for either. */
+  --hero-mark: var(--primitive-brand-500);
   --primary-foreground: var(--primitive-neutral-0);
   --secondary: var(--primitive-brand-200);
   --secondary-foreground: var(--primitive-brand-800);
@@ -69,7 +73,7 @@
   /* Chart colors: the Figma kit does not define these, so they stay at the
      shadcn preset's green defaults. Not used by the teaser. */
   --chart-1: oklch(0.871 0.15 154.449);
-  --chart-2: oklch(0.723 0.219 149.579);
+  --chart-2: oklch(0.7227 0.192 149.58);
   --chart-3: oklch(0.627 0.194 149.214);
   --chart-4: oklch(0.527 0.154 150.069);
   --chart-5: oklch(0.448 0.119 151.328);
@@ -116,13 +120,13 @@
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.556 0 0);
   --chart-1: oklch(0.871 0.15 154.449);
-  --chart-2: oklch(0.723 0.219 149.579);
+  --chart-2: oklch(0.7227 0.192 149.58);
   --chart-3: oklch(0.627 0.194 149.214);
   --chart-4: oklch(0.527 0.154 150.069);
   --chart-5: oklch(0.448 0.119 151.328);
   --sidebar: oklch(0.205 0 0);
   --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.723 0.219 149.579);
+  --sidebar-primary: oklch(0.7227 0.192 149.58);
   --sidebar-primary-foreground: oklch(0.982 0.018 155.826);
   --sidebar-accent: oklch(0.269 0 0);
   --sidebar-accent-foreground: oklch(0.985 0 0);
