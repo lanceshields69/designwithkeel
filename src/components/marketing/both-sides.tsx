@@ -21,7 +21,7 @@ function SideCard({
       <CardContent className="flex flex-col gap-6">
         <div className="flex items-center gap-2">
           <span className="flex size-7 items-center justify-center rounded-sm border border-border">
-            <TeaserIcon name={icon} className="size-3.5" />
+            <TeaserIcon name={icon} className="size-3.5 text-primary" />
           </span>
           <h3 className="text-xs leading-4 font-bold tracking-normal text-sidebar-accent-foreground">
             {title}
@@ -72,10 +72,10 @@ function BothSides() {
           />
           <div className="flex flex-row items-center justify-center gap-4 lg:h-full lg:min-w-35 lg:flex-col">
             <Separator
-              className="hidden lg:block lg:h-10 lg:w-px"
+              className="hidden lg:block lg:h-10 lg:w-px data-vertical:self-center"
               orientation="vertical"
             />
-            <p className="px-4 py-6 text-center text-sm font-bold text-sidebar-accent-foreground">
+            <p className="px-4 py-6 text-center text-base leading-6 font-bold text-secondary-foreground">
               {bothSides.center.map((line) => (
                 <span key={line} className="block">
                   {line}
@@ -83,7 +83,7 @@ function BothSides() {
               ))}
             </p>
             <Separator
-              className="hidden lg:block lg:h-10 lg:w-px"
+              className="hidden lg:block lg:h-10 lg:w-px data-vertical:self-center"
               orientation="vertical"
             />
           </div>

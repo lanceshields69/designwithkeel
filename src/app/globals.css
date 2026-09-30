@@ -112,8 +112,8 @@
   text-transform: uppercase;
 }
 
-/* Motion: nothing on the page is animated except smooth anchor scrolling and
-   the hero carousel. Everything is switched off for people who ask for less
+/* Motion: nothing on the page is animated except smooth anchor scrolling, the
+   hero carousel and the Keel symbol over the hero photo. Everything is switched off for people who ask for less
    motion. */
 @media (prefers-reduced-motion: no-preference) {
   html {
@@ -160,5 +160,49 @@
 @media (prefers-reduced-motion: reduce) {
   .hero-guide-box[data-active="true"] .hero-guide-scroll {
     animation: none;
+  }
+}
+
+/* Keel symbol over the hero photo. The outer element fades in once (1.2s).
+   The inner one breathes in place. One 4s loop drives both the size and the
+   fade, so they stay in step: it grows about 5% and brightens from 30% to 55%
+   opacity, then shrinks back and dims. It does not move. */
+.hero-mark {
+  animation: hero-mark-in 1.2s ease-out both;
+}
+
+.hero-mark-drift {
+  animation: hero-mark-float 4s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+@keyframes hero-mark-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes hero-mark-float {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.55;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-mark,
+  .hero-mark-drift {
+    animation: none;
+  }
+  .hero-mark-drift {
+    opacity: 0.5;
   }
 }

@@ -21,11 +21,14 @@ function Hero() {
         className="-z-10 object-cover opacity-60"
       />
       {/* The Keel symbol on the water, top right. Decorative: the SVG is an
-          alpha mask filled with green 500 at 50% opacity. */}
+          alpha mask filled with green 500 at about 50% opacity. It fades in,
+          then floats and breathes (see .hero-mark in globals.css). */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute top-[69px] right-[4.6%] hidden h-[106px] w-[104px] bg-[var(--hero-mark)] [mask-image:url(/teaser/keel-symbol.svg)] [mask-size:100%_100%] [mask-repeat:no-repeat] opacity-50 lg:block"
-      />
+        className="hero-mark pointer-events-none absolute top-[69px] right-[4.6%] hidden h-[106px] w-[104px] lg:block"
+      >
+        <div className="hero-mark-drift size-full bg-[var(--hero-mark)] [mask-image:url(/teaser/keel-symbol.svg)] [mask-size:100%_100%] [mask-repeat:no-repeat]" />
+      </div>
       <Container className="max-w-5xl">
         <div className="flex flex-col items-center text-center">
           <SectionTag inverse>{hero.eyebrow}</SectionTag>
