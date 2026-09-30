@@ -24,7 +24,10 @@ function Problem() {
               <Card className="w-full">
                 <CardContent className="flex-row items-start gap-4">
                   <span className="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-md border border-border bg-popover">
-                    <TeaserIcon name={item.icon} className="size-4" />
+                    <TeaserIcon
+                      name={item.icon}
+                      className="size-4 text-primary"
+                    />
                   </span>
                   <div className="flex flex-col gap-2">
                     <h3 className="text-xs leading-4 font-bold tracking-normal text-sidebar-accent-foreground">

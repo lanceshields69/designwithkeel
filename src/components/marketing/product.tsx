@@ -28,7 +28,7 @@ function Product() {
           {product.headline}
         </h2>
         <Tabs defaultValue={product.tabs[0].id} className="mt-10 gap-0">
-          <TabsList aria-label={product.tabsLabel}>
+          <TabsList variant="brand" aria-label={product.tabsLabel}>
             {product.tabs.map((tab) => (
               <TabsTrigger key={tab.id} value={tab.id}>
                 {tab.label}
