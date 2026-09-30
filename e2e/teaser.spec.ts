@@ -280,7 +280,7 @@ test.describe("hero carousel", () => {
   }) => {
     await page.setViewportSize({ width: 1280, height: 900 })
     await page.goto("/")
-    const guide = page.locator(".hero-guide-box")
+    const guide = page.locator("[aria-label='2 of 2'] .hero-guide-box")
     await expect(guide).toHaveAttribute("data-active", "false")
 
     await page.getByRole("button", { name: "Next slide" }).click()
@@ -295,7 +295,7 @@ test.describe("hero carousel", () => {
     await page.setViewportSize({ width: 1280, height: 900 })
     await page.goto("/")
     await page.getByRole("button", { name: "Next slide" }).click()
-    const img = page.locator(".hero-guide-scroll")
+    const img = page.locator("[aria-label='2 of 2'] .hero-guide-scroll")
     const name = await img.evaluate((el) => getComputedStyle(el).animationName)
     expect(name).toBe("hero-guide-scroll")
     const duration = await img.evaluate(
@@ -310,6 +310,20 @@ test.describe("hero carousel", () => {
     expect(delay).toBe("1.5s")
   })
 
+  test("the workspace preview scrolls 2s after load, at the guide's speed", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1280, height: 900 })
+    await page.goto("/")
+    const img = page.locator("[aria-label='1 of 2'] .hero-guide-scroll")
+    const style = await img.evaluate((el) => {
+      const s = getComputedStyle(el)
+      return [s.animationName, s.animationDuration, s.animationDelay]
+    })
+    // 3.2s of scrolling plus a 3s hold, after a 2s pause.
+    expect(style).toEqual(["hero-workspace-scroll", "6.2s", "2s"])
+  })
+
   test("does not animate when the visitor prefers reduced motion", async ({
     browser,
   }) => {
@@ -318,10 +332,10 @@ test.describe("hero carousel", () => {
     await page.setViewportSize({ width: 1280, height: 900 })
     await page.goto("/")
     await page.getByRole("button", { name: "Next slide" }).click()
-    const name = await page
+    const names = await page
       .locator(".hero-guide-scroll")
-      .evaluate((el) => getComputedStyle(el).animationName)
-    expect(name).toBe("none")
+      .evaluateAll((els) => els.map((el) => getComputedStyle(el).animationName))
+    expect(names).toEqual(["none", "none"])
     await context.close()
   })
 })
@@ -463,27 +477,37 @@ test.describe("responsive layout", () => {
 })
 
 test.describe("accessibility (axe)", () => {
+  // The big step numbers in "How Keel works" are decorative (aria-hidden) and
+  // deliberately faint: secondary foreground at 40% opacity, per the design
+  // owner. That is 1.9:1, below the 3:1 axe wants for large text, so only
+  // those four numbers are left out of the contrast check. Nothing else is.
+  const audit = (page: Page) =>
+    new AxeBuilder({ page }).exclude("[data-step-number]")
+
   test("/ has no violations", async ({ page }) => {
     await page.goto("/")
-    const results = await new AxeBuilder({ page }).analyze()
+    const results = await audit(page).analyze()
     expect(results.violations).toEqual([])
   })
 
   test("/ has no violations with a product tab and slide open", async ({
     page,
   }) => {
+    // Reduced motion makes the tab's color transition instant. Without it, axe
+    // can measure the half-faded colors right after the click.
+    await page.emulateMedia({ reducedMotion: "reduce" })
     await page.setViewportSize({ width: 1280, height: 900 })
     await page.goto("/")
     await page.getByRole("tab", { name: "Assistant" }).click()
     await page.getByRole("button", { name: "Next slide" }).click()
-    const results = await new AxeBuilder({ page }).analyze()
+    const results = await audit(page).analyze()
     expect(results.violations).toEqual([])
   })
 
   test("/ has no violations on a phone", async ({ page }) => {
     await page.setViewportSize({ width: 320, height: 700 })
     await page.goto("/")
-    const results = await new AxeBuilder({ page }).analyze()
+    const results = await audit(page).analyze()
     expect(results.violations).toEqual([])
   })
 

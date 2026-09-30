@@ -13,9 +13,11 @@ import {
 } from "@/components/ui/carousel"
 import { teaser } from "@/content/teaser"
 
-// Two product previews. The second is a tall page that scrolls once it is
-// showing (see .hero-guide-scroll in globals.css) and is switched off for
-// people who prefer reduced motion.
+// Two product previews. Both are taller than their window and scroll slowly
+// once they are showing (see .hero-guide-scroll in globals.css). The first
+// waits 2 seconds after the page loads, the second 1.5 seconds after it
+// appears. Both scroll at the same speed, so the shorter first image takes
+// less time. The scrolling is switched off for people who prefer reduced motion.
 function HeroCarousel() {
   const { slides, carouselLabel } = teaser.hero
   const [api, setApi] = React.useState<CarouselApi>()
@@ -49,14 +51,25 @@ function HeroCarousel() {
           aria-label="1 of 2"
           aria-hidden={selected !== 0}
         >
-          <div className="relative aspect-956/456 overflow-hidden rounded-lg shadow-2xl">
+          <div
+            className="hero-guide-box relative aspect-956/456 overflow-hidden rounded-lg bg-popover shadow-2xl"
+            data-active={selected === 0}
+            style={
+              {
+                "--hero-scroll-name": "hero-workspace-scroll",
+                "--hero-scroll-total": "6.2s",
+                "--hero-scroll-delay": "2s",
+              } as React.CSSProperties
+            }
+          >
             <Image
               src={dashboard.src}
               alt={dashboard.alt}
-              fill
+              width={dashboard.width}
+              height={dashboard.height}
               priority
               sizes="(min-width: 1024px) 956px, 100vw"
-              className="object-cover object-top"
+              className="hero-guide-scroll h-auto w-full"
             />
           </div>
         </CarouselItem>

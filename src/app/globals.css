@@ -132,9 +132,10 @@
   }
 }
 
-/* Hero carousel, slide two: a tall page that waits 1.5 seconds once it is
-   showing, scrolls down inside a fixed window, holds for 3 seconds, then
-   starts over.
+/* Hero carousel, both slides: a page taller than its window that waits once it
+   is showing (2s for slide one, 1.5s for slide two, set with
+   --hero-scroll-delay), scrolls down inside a fixed window, holds for 3
+   seconds, then starts over.
    12s of scrolling + 3s hold = 15s. The window is a size container so the
    distance is (image height - window height) at any width. */
 .hero-guide-box {
@@ -142,9 +143,23 @@
 }
 
 .hero-guide-box[data-active="true"] .hero-guide-scroll {
-  /* Waits 1.5s after the slide appears, then scrolls. The delay applies only
+  /* Waits after the slide appears, then scrolls. The delay applies only
      before the first pass; later passes restart after the 3s hold. */
-  animation: hero-guide-scroll 15s linear 1.5s infinite;
+  animation: var(--hero-scroll-name, hero-guide-scroll)
+    var(--hero-scroll-total, 15s) linear var(--hero-scroll-delay, 1.5s) infinite;
+}
+
+/* Slide one is much shorter than slide two, so it gets its own timing to
+   scroll at the same speed (about 53px a second at full width): 3.2s of
+   scrolling plus the same 3s hold = 6.2s, and 3.2 / 6.2 = 51.6%. */
+@keyframes hero-workspace-scroll {
+  0% {
+    transform: translateY(0);
+  }
+  51.6%,
+  100% {
+    transform: translateY(calc(-100% + 100cqh));
+  }
 }
 
 @keyframes hero-guide-scroll {
@@ -164,9 +179,9 @@
 }
 
 /* Keel symbol over the hero photo. The outer element fades in once (1.2s).
-   The inner one breathes in place. One 4s loop drives both the size and the
-   fade, so they stay in step: it grows about 5% and brightens from 30% to 55%
-   opacity, then shrinks back and dims. It does not move. */
+   The inner one floats on water. One 4s loop drives the movement, size and
+   fade together, so they stay in step: it rises 7px, grows about 5% and
+   brightens from 30% to 55% opacity, then sinks, shrinks back and dims. */
 .hero-mark {
   animation: hero-mark-in 1.2s ease-out both;
 }
@@ -188,11 +203,11 @@
 @keyframes hero-mark-float {
   0%,
   100% {
-    transform: scale(1);
+    transform: translateY(0) scale(1);
     opacity: 0.3;
   }
   50% {
-    transform: scale(1.05);
+    transform: translateY(-7px) scale(1.05);
     opacity: 0.55;
   }
 }
