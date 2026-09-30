@@ -48,7 +48,28 @@ test.describe("page structure", () => {
     request,
   }) => {
     await page.goto("/")
-    await expect(page).toHaveTitle(/Keel/)
+    await expect(page).toHaveTitle(
+      "Keel: Your brand and design system, built from your website"
+    )
+    await expect(page.locator('meta[name="description"]')).toHaveAttribute(
+      "content",
+      "Keel turns your website into a brand guide and a design system your team and AI tools can follow. Join the private beta."
+    )
+    const socialTitle =
+      "The brand and design system you never had time to build"
+    const socialDescription =
+      "Your brand is in a slide deck. Your product is in Figma and code. Keel brings them together for your team and your AI tools. Join the private beta."
+    for (const [attr, name, value] of [
+      ["property", "og:title", socialTitle],
+      ["property", "og:description", socialDescription],
+      ["name", "twitter:title", socialTitle],
+      ["name", "twitter:description", socialDescription],
+    ]) {
+      await expect(page.locator(`meta[${attr}="${name}"]`)).toHaveAttribute(
+        "content",
+        value
+      )
+    }
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
       "href",
       "https://designwithkeel.com"

@@ -2,21 +2,26 @@ import type { Metadata } from "next"
 
 import { SiteFooter } from "@/components/marketing/site-footer"
 import { SiteHeader } from "@/components/marketing/site-header"
-import { siteDescription, siteName, siteUrl } from "@/config/site"
-
-const title = "Keel: your brand guide and design system, in one place"
+import {
+  siteDescription,
+  siteName,
+  siteTitle,
+  siteUrl,
+  socialDescription,
+  socialTitle,
+} from "@/config/site"
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title,
+  title: siteTitle,
   description: siteDescription,
   alternates: { canonical: siteUrl },
   openGraph: {
     type: "website",
     url: siteUrl,
     siteName,
-    title,
-    description: siteDescription,
+    title: socialTitle,
+    description: socialDescription,
     images: [
       {
         url: "/teaser/og-image.jpg",
@@ -28,8 +33,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title,
-    description: siteDescription,
+    title: socialTitle,
+    description: socialDescription,
     images: ["/teaser/og-image.jpg"],
   },
 }
