@@ -72,7 +72,7 @@ function BothSides() {
           />
           <div className="flex flex-row items-center justify-center gap-4 lg:h-full lg:min-w-35 lg:flex-col">
             <Separator
-              className="hidden lg:block lg:h-10 lg:w-px"
+              className="hidden lg:block lg:h-10 lg:w-px data-vertical:self-center"
               orientation="vertical"
             />
             <p className="px-4 py-6 text-center text-sm font-bold text-sidebar-accent-foreground">
@@ -83,7 +83,7 @@ function BothSides() {
               ))}
             </p>
             <Separator
-              className="hidden lg:block lg:h-10 lg:w-px"
+              className="hidden lg:block lg:h-10 lg:w-px data-vertical:self-center"
               orientation="vertical"
             />
           </div>
