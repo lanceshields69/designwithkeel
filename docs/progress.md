@@ -7,7 +7,7 @@ plan in [product-brief.md](./product-brief.md#suggested-build-milestones).
 
 | Milestone | Name                                 | Status      |
 | --------- | ------------------------------------ | ----------- |
-| M0        | Repository and working agreement     | Done        |
+| M0        | Repository and working agreement     | Merged      |
 | M1        | Clickable application shell          | Not started |
 | M2        | Authentication and brand persistence | Not started |
 | M3        | Website scanning job                 | Not started |
@@ -19,7 +19,7 @@ plan in [product-brief.md](./product-brief.md#suggested-build-milestones).
 
 ## M0: Repository and working agreement
 
-**Status:** Done, pending approval.
+**Status:** Merged to `main` (PR #1).
 
 ### Scope delivered
 
