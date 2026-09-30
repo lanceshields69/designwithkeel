@@ -2,13 +2,14 @@ import Image from "next/image"
 import Link from "next/link"
 
 import { Container } from "@/components/layout/container"
+import { HideOnScrollHeader } from "@/components/marketing/hide-on-scroll-header"
 import { buttonVariants } from "@/components/ui/button"
 import { teaser } from "@/content/teaser"
 
 function SiteHeader() {
   const { nav } = teaser
   return (
-    <header className="border-b border-border bg-popover">
+    <HideOnScrollHeader className="border-b border-border bg-popover">
       <Container className="flex h-14 items-center justify-between gap-4">
         <Link
           href="/"
@@ -43,7 +44,7 @@ function SiteHeader() {
           {nav.cta.label}
         </a>
       </Container>
-    </header>
+    </HideOnScrollHeader>
   )
 }
 

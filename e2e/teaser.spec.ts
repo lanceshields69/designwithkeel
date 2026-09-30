@@ -127,12 +127,83 @@ test.describe("navigation and calls to action", () => {
       ["For teams", "for-teams"],
       ["How it works", "how-it-works"],
     ]) {
+      // The bar hides after scrolling down; a small scroll up brings it back.
+      // Wait for the previous smooth scroll to finish first.
+      await page.evaluate(
+        () =>
+          new Promise<void>((resolve) => {
+            let last = -1
+            const tick = () => {
+              if (window.scrollY === last) resolve()
+              else {
+                last = window.scrollY
+                setTimeout(tick, 150)
+              }
+            }
+            tick()
+          })
+      )
+      await page.mouse.wheel(0, -60)
+      await expect(page.getByRole("banner")).toBeInViewport()
       await page
         .getByRole("navigation", { name: "Primary" })
         .getByRole("link", { name })
         .click()
       await expect(page.locator(`#${id}`)).toBeInViewport()
     }
+  })
+})
+
+test.describe("top bar", () => {
+  test("hides when scrolling down and slides back when scrolling up", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1280, height: 800 })
+    await page.goto("/")
+    const bar = page.getByRole("banner")
+    await expect(bar).toBeInViewport()
+
+    await page.mouse.wheel(0, 900)
+    await expect(bar).toHaveAttribute("data-visible", "false")
+    await expect(bar).not.toBeInViewport()
+
+    await page.mouse.wheel(0, -120)
+    await expect(bar).toHaveAttribute("data-visible", "true")
+    await expect(bar).toBeInViewport()
+
+    await page.mouse.wheel(0, 900)
+    await expect(bar).not.toBeInViewport()
+    await page.mouse.wheel(0, -5000)
+    await expect(bar).toBeInViewport()
+  })
+
+  test("comes back when a keyboard user tabs into it", async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 800 })
+    await page.goto("/")
+    await page.mouse.wheel(0, 900)
+    const bar = page.getByRole("banner")
+    await expect(bar).not.toBeInViewport()
+    await page.getByRole("link", { name: "Join early access" }).focus()
+    await expect(bar).toHaveAttribute("data-visible", "true")
+    await expect(bar).toBeInViewport()
+  })
+
+  test("has no slide animation when the visitor prefers reduced motion", async ({
+    browser,
+  }) => {
+    const context = await browser.newContext({ reducedMotion: "reduce" })
+    const page = await context.newPage()
+    await page.setViewportSize({ width: 1280, height: 800 })
+    await page.goto("/")
+    const bar = page.getByRole("banner")
+    const duration = await bar.evaluate(
+      (el) => getComputedStyle(el).transitionDuration
+    )
+    // Effectively instant (the global reduced-motion rule sets 0.01ms).
+    expect(parseFloat(duration)).toBeLessThan(0.001)
+    await page.mouse.wheel(0, 900)
+    await expect(bar).not.toBeInViewport()
+    await context.close()
   })
 })
 

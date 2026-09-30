@@ -153,7 +153,7 @@ arbitrary color like `bg-[#22c55e]`, or a raw palette class like
 ## Motion
 
 Nothing is animated except: smooth scrolling for the in-page anchor buttons,
-shadcn's small hover/focus transitions, and the hero carousel (a tall guide
+shadcn's small hover/focus transitions, and the top bar (it slides away when scrolling down and back when scrolling up) and the hero carousel (a tall guide
 image waits 1.5 seconds, scrolls, holds 3 seconds, then starts over). All of it is switched off
 under `prefers-reduced-motion`. See decision 0005.
 
