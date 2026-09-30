@@ -275,53 +275,78 @@ test.describe("product tabs", () => {
 })
 
 test.describe("hero carousel", () => {
-  test("arrows switch to the brand guide preview and back", async ({
-    page,
-  }) => {
+  const box = (page: Page, n: number) =>
+    page.locator(`[aria-label='${n} of 3'] .hero-guide-box`)
+
+  test("arrows move through the three previews and back", async ({ page }) => {
     await page.setViewportSize({ width: 1280, height: 900 })
     await page.goto("/")
-    const guide = page.locator("[aria-label='2 of 2'] .hero-guide-box")
-    await expect(guide).toHaveAttribute("data-active", "false")
+    await expect(box(page, 1)).toHaveAttribute("data-active", "true")
+    await expect(box(page, 3)).toHaveAttribute("data-active", "false")
 
     await page.getByRole("button", { name: "Next slide" }).click()
-    await expect(guide).toHaveAttribute("data-active", "true")
-    await expect(guide.getByAltText(/published Keel brand guide/)).toBeVisible()
+    await expect(box(page, 2)).toHaveAttribute("data-active", "true")
+    await page.getByRole("button", { name: "Next slide" }).click()
+    await expect(box(page, 3)).toHaveAttribute("data-active", "true")
+    await expect(
+      box(page, 3).getByAltText(/published Keel brand guide/)
+    ).toBeVisible()
 
     await page.getByRole("button", { name: "Previous slide" }).click()
-    await expect(guide).toHaveAttribute("data-active", "false")
+    await page.getByRole("button", { name: "Previous slide" }).click()
+    await expect(box(page, 1)).toHaveAttribute("data-active", "true")
+    await expect(box(page, 3)).toHaveAttribute("data-active", "false")
   })
 
-  test("the brand guide scrolls once it is showing", async ({ page }) => {
-    await page.setViewportSize({ width: 1280, height: 900 })
-    await page.goto("/")
-    await page.getByRole("button", { name: "Next slide" }).click()
-    const img = page.locator("[aria-label='2 of 2'] .hero-guide-scroll")
-    const name = await img.evaluate((el) => getComputedStyle(el).animationName)
-    expect(name).toBe("hero-guide-scroll")
-    const duration = await img.evaluate(
-      (el) => getComputedStyle(el).animationDuration
-    )
-    // 12s of scrolling plus a 3s hold before it starts over.
-    expect(duration).toBe("15s")
-    // It waits 1.5s after the slide appears before it starts scrolling.
-    const delay = await img.evaluate(
-      (el) => getComputedStyle(el).animationDelay
-    )
-    expect(delay).toBe("1.5s")
-  })
+  // Every preview scrolls at the same speed, about 53px a second. Each one
+  // scrolls for its own length of time, then holds for 3s, then runs once and
+  // stops. The first waits 2s after the page loads; the others 1.5s after they
+  // appear.
+  const timings = [
+    { n: 1, name: "hero-setup-scroll", total: "10.1s", delay: "2s" },
+    { n: 2, name: "hero-workspace-scroll", total: "6.2s", delay: "1.5s" },
+    { n: 3, name: "hero-guide-scroll", total: "15s", delay: "1.5s" },
+  ]
+  for (const t of timings) {
+    test(`preview ${t.n} scrolls after a ${t.delay} pause`, async ({
+      page,
+    }) => {
+      await page.setViewportSize({ width: 1280, height: 900 })
+      await page.goto("/")
+      // A preview only animates while it is the one showing.
+      for (let i = 1; i < t.n; i++) {
+        await page.getByRole("button", { name: "Next slide" }).click()
+      }
+      await expect(box(page, t.n)).toHaveAttribute("data-active", "true")
+      const img = page.locator(`[aria-label='${t.n} of 3'] .hero-guide-scroll`)
+      const style = await img.evaluate((el) => {
+        const s = getComputedStyle(el)
+        return [s.animationName, s.animationDuration, s.animationDelay]
+      })
+      expect(style).toEqual([t.name, t.total, t.delay])
+    })
+  }
 
-  test("the workspace preview scrolls 2s after load, at the guide's speed", async ({
+  test("moves to the next preview when one finishes scrolling, then wraps", async ({
     page,
   }) => {
     await page.setViewportSize({ width: 1280, height: 900 })
-    await page.goto("/")
-    const img = page.locator("[aria-label='1 of 2'] .hero-guide-scroll")
-    const style = await img.evaluate((el) => {
-      const s = getComputedStyle(el)
-      return [s.animationName, s.animationDuration, s.animationDelay]
+    // Make the real timings (several seconds each) near-instant for the test.
+    await page.addInitScript(() => {
+      const style = document.createElement("style")
+      style.textContent =
+        ".hero-guide-scroll{animation-duration:.4s!important;animation-delay:.1s!important}"
+      document.addEventListener("DOMContentLoaded", () =>
+        document.head.appendChild(style)
+      )
     })
-    // 3.2s of scrolling plus a 3s hold, after a 2s pause.
-    expect(style).toEqual(["hero-workspace-scroll", "6.2s", "2s"])
+    await page.goto("/")
+    await expect(box(page, 1)).toHaveAttribute("data-active", "true")
+    await expect(box(page, 2)).toHaveAttribute("data-active", "true")
+    await expect(box(page, 3)).toHaveAttribute("data-active", "true")
+    // After the last one it goes back to the first.
+    await expect(box(page, 1)).toHaveAttribute("data-active", "false")
+    await expect(box(page, 1)).toHaveAttribute("data-active", "true")
   })
 
   test("does not animate when the visitor prefers reduced motion", async ({
@@ -331,11 +356,10 @@ test.describe("hero carousel", () => {
     const page = await context.newPage()
     await page.setViewportSize({ width: 1280, height: 900 })
     await page.goto("/")
-    await page.getByRole("button", { name: "Next slide" }).click()
     const names = await page
       .locator(".hero-guide-scroll")
       .evaluateAll((els) => els.map((el) => getComputedStyle(el).animationName))
-    expect(names).toEqual(["none", "none"])
+    expect(names).toEqual(["none", "none", "none"])
     await context.close()
   })
 })

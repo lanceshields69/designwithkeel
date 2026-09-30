@@ -132,10 +132,10 @@
   }
 }
 
-/* Hero carousel, both slides: a page taller than its window that waits once it
-   is showing (2s for slide one, 1.5s for slide two, set with
+/* Hero carousel, every slide: a page taller than its window that waits once it
+   is showing (2s for the first slide, 1.5s for the others, set with
    --hero-scroll-delay), scrolls down inside a fixed window, holds for 3
-   seconds, then starts over.
+   seconds, then the carousel moves to the next slide.
    12s of scrolling + 3s hold = 15s. The window is a size container so the
    distance is (image height - window height) at any width. */
 .hero-guide-box {
@@ -143,15 +143,35 @@
 }
 
 .hero-guide-box[data-active="true"] .hero-guide-scroll {
-  /* Waits after the slide appears, then scrolls. The delay applies only
-     before the first pass; later passes restart after the 3s hold. */
+  /* Waits after the slide appears, scrolls, holds 3s at the bottom, then runs
+     once and stops. The carousel moves on when it ends (hero-carousel.tsx). */
   animation: var(--hero-scroll-name, hero-guide-scroll)
-    var(--hero-scroll-total, 15s) linear var(--hero-scroll-delay, 1.5s) infinite;
+    var(--hero-scroll-total, 15s) linear var(--hero-scroll-delay, 1.5s) 1
+    forwards;
 }
 
-/* Slide one is much shorter than slide two, so it gets its own timing to
-   scroll at the same speed (about 53px a second at full width): 3.2s of
-   scrolling plus the same 3s hold = 6.2s, and 3.2 / 6.2 = 51.6%. */
+/* Hovering over the carousel, or focusing inside it, pauses the scrolling and
+   so the automatic move to the next slide. */
+.hero-carousel:hover .hero-guide-scroll,
+.hero-carousel:focus-within .hero-guide-scroll {
+  animation-play-state: paused;
+}
+
+/* The slides are different heights, so each gets its own timing to scroll at
+   the same speed (about 53px a second at full width), then hold for 3s:
+   - setup:     7.1s scrolling + 3s = 10.1s, and 7.1 / 10.1 = 70.3%
+   - workspace: 3.2s scrolling + 3s = 6.2s,  and 3.2 / 6.2 = 51.6%
+   - guide:     12s scrolling  + 3s = 15s,   and 12 / 15   = 80% */
+@keyframes hero-setup-scroll {
+  0% {
+    transform: translateY(0);
+  }
+  70.3%,
+  100% {
+    transform: translateY(calc(-100% + 100cqh));
+  }
+}
+
 @keyframes hero-workspace-scroll {
   0% {
     transform: translateY(0);
