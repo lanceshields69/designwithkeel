@@ -107,6 +107,9 @@ Layout helpers, not a second component library:
 `src/components/layout/container.tsx` (width) and `section.tsx` (vertical
 rhythm and background band: `default`, `surface`, `inverse`).
 
+Button size `xl` (48px tall, 24px side padding, 16px text) is used by the two hero
+buttons, matching Figma. The tag-pill height and the tab list still use stock sizes.
+
 Stock changes made on request: the ToggleGroup "outline" items are white when
 off and black at 5% when selected or hovered, with 16px side padding (Figma
 "Button combo").

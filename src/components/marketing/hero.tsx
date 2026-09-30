@@ -38,7 +38,7 @@ function Hero() {
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
             <a
               href={hero.primaryCta.href}
-              className={buttonVariants({ size: "lg" })}
+              className={buttonVariants({ size: "xl" })}
             >
               {hero.primaryCta.label}
               <ArrowRight aria-hidden="true" data-icon="inline-end" />
@@ -46,7 +46,7 @@ function Hero() {
             <a
               href={hero.secondaryCta.href}
               className={buttonVariants({
-                size: "lg",
+                size: "xl",
                 variant: "outline-inverse",
               })}
             >

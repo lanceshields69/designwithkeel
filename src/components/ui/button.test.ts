@@ -18,4 +18,13 @@ describe("buttonVariants", () => {
       "border-transparent"
     )
   })
+
+  it("has an xl size for the hero: 48px tall with 24px side padding", () => {
+    const classes = buttonVariants({ size: "xl" }).split(" ")
+    expect(classes).toEqual(
+      expect.arrayContaining(["h-12", "px-6", "text-base"])
+    )
+    // Later classes win, so the smaller base text size must be gone.
+    expect(classes).not.toContain("text-sm")
+  })
 })

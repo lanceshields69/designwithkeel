@@ -95,6 +95,21 @@ test.describe("navigation and calls to action", () => {
     await expect(page.locator("#waitlist")).toBeInViewport()
   })
 
+  test("hero buttons are 48px tall with 24px side padding", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1359, height: 900 })
+    await page.goto("/")
+    for (const name of ["Reserve your spot", "See how Keel works"]) {
+      const button = page.getByRole("link", { name })
+      await expect(button).toHaveCSS("padding-left", "24px")
+      await expect(button).toHaveCSS("padding-right", "24px")
+      await expect(button).toHaveCSS("font-size", "16px")
+      const box = await button.boundingBox()
+      expect(box?.height).toBe(48)
+    }
+  })
+
   test("the secondary hero button scrolls to How Keel works", async ({
     page,
   }) => {

@@ -142,7 +142,7 @@ const buttonVariants = [
   "destructive",
   "link",
 ] as const
-const buttonSizes = ["xs", "sm", "default", "lg"] as const
+const buttonSizes = ["xs", "sm", "default", "lg", "xl"] as const
 const badgeVariants = [
   "default",
   "secondary",
