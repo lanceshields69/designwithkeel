@@ -12,14 +12,16 @@
     "format": "prettier --write \"**/*.{ts,tsx,md,json}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,md,json}\"",
     "typecheck": "tsc --noEmit",
+    "check:tokens": "node scripts/check-tokens.ts",
     "test": "vitest run",
     "test:e2e": "playwright test",
-    "check": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test"
+    "check": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm check:tokens && pnpm test"
   },
   "dependencies": {
     "@base-ui/react": "^1.8.0",
     "class-variance-authority": "^0.7.1",
     "cn": "^0.4.0",
+    "embla-carousel-react": "^8.6.0",
     "lucide-react": "^1.48.0",
     "next": "16.3.4",
     "next-themes": "^0.4.6",

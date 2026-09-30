@@ -29,7 +29,10 @@ Then read this file fully before making any change.
 - `pnpm test` — Vitest unit/component tests
 - `pnpm test:e2e` — Playwright (currently a local-only check; see
   `docs/progress.md`)
-- `pnpm check` — `format:check && lint && typecheck && test`, in that order.
+- `pnpm check:tokens` — fails if UI code (`src/components`, `src/app`) uses a raw
+  color (hex, `rgb(`, `hsl(`, `oklch(`, `bg-[#...]`, `bg-green-500`, `text-white`)
+  instead of a semantic token. Raw colors live only in `src/styles`.
+- `pnpm check` — `format:check && lint && typecheck && check:tokens && test`, in that order.
   Run this (and `pnpm build`) before considering any milestone done.
 
 ## Folder conventions

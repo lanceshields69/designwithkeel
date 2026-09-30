@@ -19,6 +19,9 @@ import { z } from "zod"
 // Exported so tests can validate the pattern itself (extending these with a
 // throwaway field) without needing a real secret to exist. See env.test.ts.
 export const serverSchema = z.object({
+  // Build-time switch for the /design-system reference page. Unset or
+  // anything but "true" makes that route return 404.
+  SHOW_DESIGN_SYSTEM: z.enum(["true", "false"]).optional(),
   // SUPABASE_URL: z.string().url(),
   // SUPABASE_SERVICE_ROLE_KEY: z.string().min(1),
   // ANTHROPIC_API_KEY: z.string().min(1),
@@ -31,12 +34,18 @@ export const serverSchema = z.object({
 })
 
 export const clientSchema = z.object({
+  // Formspree form endpoint for the teaser waitlist. Optional: when it is
+  // missing the form shows "Signups open soon" instead of failing.
+  NEXT_PUBLIC_FORMSPREE_ENDPOINT: z.url().optional(),
   // NEXT_PUBLIC_SUPABASE_URL: z.string().url(),
   // NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string().min(1),
 })
 
-type ServerEnv = z.infer<typeof serverSchema>
-type ClientEnv = z.infer<typeof clientSchema>
+// An empty z.object({}) infers as Record<string, never>, which can't be
+// intersected with real keys. Drop the index signature and keep named keys.
+type KnownKeys<T> = { [K in keyof T as string extends K ? never : K]: T[K] }
+type ServerEnv = KnownKeys<z.infer<typeof serverSchema>>
+type ClientEnv = KnownKeys<z.infer<typeof clientSchema>>
 type Env = ServerEnv & ClientEnv
 
 export function parseEnv(): Env {
