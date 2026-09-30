@@ -11,6 +11,18 @@ async function mockFormspree(
   await page.route(FORMSPREE, handler)
 }
 
+// Scrolling before the page has finished loading its scripts is ignored by the
+// top bar (nothing is listening yet), so keep scrolling until it reacts.
+async function scrollUntilBarHides(page: Page) {
+  const bar = page.getByRole("banner")
+  await expect(async () => {
+    await page.mouse.wheel(0, 600)
+    await expect(bar).toHaveAttribute("data-visible", "false", {
+      timeout: 1500,
+    })
+  }).toPass({ timeout: 15_000 })
+}
+
 async function fillValid(page: Page) {
   await page.getByLabel(/Work email/).fill("ada@example.com")
   await page.getByLabel(/Company/).fill("Acme Inc.")
@@ -197,8 +209,7 @@ test.describe("top bar", () => {
     const bar = page.getByRole("banner")
     await expect(bar).toBeInViewport()
 
-    await page.mouse.wheel(0, 900)
-    await expect(bar).toHaveAttribute("data-visible", "false")
+    await scrollUntilBarHides(page)
     await expect(bar).not.toBeInViewport()
 
     await page.mouse.wheel(0, -120)
@@ -214,8 +225,8 @@ test.describe("top bar", () => {
   test("comes back when a keyboard user tabs into it", async ({ page }) => {
     await page.setViewportSize({ width: 1280, height: 800 })
     await page.goto("/")
-    await page.mouse.wheel(0, 900)
     const bar = page.getByRole("banner")
+    await scrollUntilBarHides(page)
     await expect(bar).not.toBeInViewport()
     await page.getByRole("link", { name: "Join early access" }).focus()
     await expect(bar).toHaveAttribute("data-visible", "true")
@@ -235,7 +246,7 @@ test.describe("top bar", () => {
     )
     // Effectively instant (the global reduced-motion rule sets 0.01ms).
     expect(parseFloat(duration)).toBeLessThan(0.001)
-    await page.mouse.wheel(0, 900)
+    await scrollUntilBarHides(page)
     await expect(bar).not.toBeInViewport()
     await context.close()
   })
