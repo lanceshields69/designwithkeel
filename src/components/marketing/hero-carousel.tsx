@@ -13,11 +13,14 @@ import {
 } from "@/components/ui/carousel"
 import { teaser } from "@/content/teaser"
 
-// Two product previews. Both are taller than their window and scroll slowly
-// once they are showing (see .hero-guide-scroll in globals.css). The first
-// waits 2 seconds after the page loads, the second 1.5 seconds after it
-// appears. Both scroll at the same speed, so the shorter first image takes
-// less time. The scrolling is switched off for people who prefer reduced motion.
+// Product previews. Each one is taller than its window and scrolls slowly once
+// it is showing, all at the same speed (see .hero-guide-scroll in globals.css
+// and the `scroll` timing on each slide in content/teaser.ts). The first waits
+// 2 seconds after the page loads, the others 1.5 seconds after they appear.
+// When a preview finishes scrolling (and its 3 second hold at the bottom), the
+// carousel moves on to the next one, and back to the first after the last.
+// Hovering over the carousel or focusing inside it pauses everything. Reduced
+// motion switches the scrolling off, so nothing rotates by itself.
 function HeroCarousel() {
   const { slides, carouselLabel } = teaser.hero
   const [api, setApi] = React.useState<CarouselApi>()
@@ -31,67 +34,67 @@ function HeroCarousel() {
     },
     [api]
   )
+  // A slide only starts (and keeps) scrolling once the carousel has finished
+  // sliding to it, so the one sliding out does not jump back to its top.
+  const [settled, setSettled] = React.useState(0)
+  React.useEffect(() => {
+    if (!api) return
+    const onSettle = () => setSettled(api.selectedScrollSnap())
+    api.on("settle", onSettle)
+    return () => {
+      api.off("settle", onSettle)
+    }
+  }, [api])
   const selected = React.useSyncExternalStore(
     subscribe,
     () => api?.selectedScrollSnap() ?? 0,
     () => 0
   )
 
-  const [dashboard, guide] = slides
+  const advance = (index: number) => {
+    if (!api || api.selectedScrollSnap() !== index) return
+    if (api.canScrollNext()) api.scrollNext()
+    else api.scrollTo(0)
+  }
 
   return (
     <Carousel
       setApi={setApi}
       aria-label={carouselLabel}
-      className="mx-auto mt-12 w-full max-w-[956px]"
+      className="hero-carousel mx-auto mt-12 w-full max-w-[956px]"
     >
       <CarouselContent className="ml-0">
-        <CarouselItem
-          className="pl-0"
-          aria-label="1 of 2"
-          aria-hidden={selected !== 0}
-        >
-          <div
-            className="hero-guide-box relative aspect-956/456 overflow-hidden rounded-lg bg-popover shadow-2xl"
-            data-active={selected === 0}
-            style={
-              {
-                "--hero-scroll-name": "hero-workspace-scroll",
-                "--hero-scroll-total": "6.2s",
-                "--hero-scroll-delay": "2s",
-              } as React.CSSProperties
-            }
+        {slides.map((slide, index) => (
+          <CarouselItem
+            key={slide.src}
+            className="pl-0"
+            aria-label={`${index + 1} of ${slides.length}`}
+            aria-hidden={selected !== index}
           >
-            <Image
-              src={dashboard.src}
-              alt={dashboard.alt}
-              width={dashboard.width}
-              height={dashboard.height}
-              priority
-              sizes="(min-width: 1024px) 956px, 100vw"
-              className="hero-guide-scroll h-auto w-full"
-            />
-          </div>
-        </CarouselItem>
-        <CarouselItem
-          className="pl-0"
-          aria-label="2 of 2"
-          aria-hidden={selected !== 1}
-        >
-          <div
-            className="hero-guide-box relative aspect-956/456 overflow-hidden rounded-lg bg-popover shadow-2xl"
-            data-active={selected === 1}
-          >
-            <Image
-              src={guide.src}
-              alt={guide.alt}
-              width={guide.width}
-              height={guide.height}
-              sizes="(min-width: 1024px) 956px, 100vw"
-              className="hero-guide-scroll h-auto w-full"
-            />
-          </div>
-        </CarouselItem>
+            <div
+              className="hero-guide-box relative aspect-956/456 overflow-hidden rounded-lg bg-popover shadow-2xl"
+              data-active={settled === index}
+              style={
+                {
+                  "--hero-scroll-name": slide.scroll.name,
+                  "--hero-scroll-total": slide.scroll.total,
+                  "--hero-scroll-delay": slide.scroll.delay,
+                } as React.CSSProperties
+              }
+            >
+              <Image
+                src={slide.src}
+                alt={slide.alt}
+                width={slide.width}
+                height={slide.height}
+                priority={index === 0}
+                sizes="(min-width: 1024px) 956px, 100vw"
+                className="hero-guide-scroll h-auto w-full"
+                onAnimationEnd={() => advance(index)}
+              />
+            </div>
+          </CarouselItem>
+        ))}
       </CarouselContent>
       <CarouselPrevious
         variant="outline-inverse"
