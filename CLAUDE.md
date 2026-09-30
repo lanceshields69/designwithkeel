@@ -58,7 +58,14 @@ Then read this file fully before making any change.
 
 - This project uses Base UI (`base-vega` style), not Radix. Run
   `pnpm dlx shadcn@latest docs <component>` for a component's real API before
-  using it, and use the `render` prop for polymorphism, not `asChild`.
+  using it, and use the `render` prop for polymorphism, not `asChild`. One
+  exception: for a navigation link that should look like a button, use
+  `<a className={buttonVariants({ ... })}>`, because `Button` with
+  `render={<a />}` puts `role="button"` on the anchor.
+- Keel's design system is shadcn's variables set to Keel's values
+  (`src/styles/tokens.css`, documented in `DESIGN.md`). Use semantic classes
+  (`bg-primary`), never raw colors; `pnpm check:tokens` enforces it. A new
+  look is a new variant and needs approval first.
 - Read `docs/product-brief.md`, `docs/architecture.md` and
   `docs/progress.md` at the start of every session.
 - Inspect before editing. Do not rewrite unrelated files.

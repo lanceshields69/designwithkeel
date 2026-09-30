@@ -65,5 +65,9 @@ describe("tokens.css", () => {
     expect(
       contrastRatio(get("primary").rgb, get("background").rgb)
     ).toBeGreaterThanOrEqual(3)
+    // Form field edges.
+    expect(
+      contrastRatio(get("input").rgb, get("background").rgb)
+    ).toBeGreaterThanOrEqual(3)
   })
 })

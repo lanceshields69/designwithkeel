@@ -3,9 +3,11 @@ import { expect, test } from "@playwright/test"
 test("home page loads", async ({ page }) => {
   await page.goto("/")
   await expect(
-    page.getByRole("heading", { level: 1, name: "Keel" })
+    page.getByRole("heading", {
+      level: 1,
+      name: "The brand and design system you never had time to build.",
+    })
   ).toBeVisible()
-  await expect(page.getByText("Coming soon.")).toBeVisible()
 })
 
 test("/api/health returns ok", async ({ request }) => {

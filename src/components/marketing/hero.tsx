@@ -16,6 +16,7 @@ function Hero() {
         alt=""
         fill
         priority
+        fetchPriority="high"
         sizes="100vw"
         className="-z-10 object-cover opacity-60"
       />

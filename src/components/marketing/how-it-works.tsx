@@ -31,7 +31,7 @@ function HowItWorks() {
                 <CardContent className="flex flex-col gap-2 md:flex-row md:gap-8">
                   <span
                     aria-hidden="true"
-                    className="shrink-0 text-h1 font-bold text-border md:w-16"
+                    className="shrink-0 text-h1 font-bold text-muted-foreground md:w-16"
                   >
                     {step.number}
                   </span>

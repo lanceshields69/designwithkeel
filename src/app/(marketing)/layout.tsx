@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     description: siteDescription,
     images: [
       {
-        url: "/teaser/og-image.png",
+        url: "/teaser/og-image.jpg",
         width: 1200,
         height: 630,
         alt: "Keel, a brand guide and design system in one connected system",
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title,
     description: siteDescription,
-    images: ["/teaser/og-image.png"],
+    images: ["/teaser/og-image.jpg"],
   },
 }
 
