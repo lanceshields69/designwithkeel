@@ -11,6 +11,9 @@ import {
   socialTitle,
 } from "@/config/site"
 
+const SHARE_ALT =
+  "Keel by Raft: One living system for your brand, product, and AI. The Keel workspace with a voice section and the assistant, and a Reserve your spot button for designwithkeel.com."
+
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: siteTitle,
@@ -24,10 +27,10 @@ export const metadata: Metadata = {
     description: socialDescription,
     images: [
       {
-        url: "/teaser/og-image.jpg",
+        url: "/teaser/share-card.jpg",
         width: 1200,
-        height: 630,
-        alt: "Keel, a brand guide and design system in one connected system",
+        height: 627,
+        alt: SHARE_ALT,
       },
     ],
   },
@@ -35,7 +38,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: socialTitle,
     description: socialDescription,
-    images: ["/teaser/og-image.jpg"],
+    images: [{ url: "/teaser/share-card.jpg", alt: SHARE_ALT }],
   },
 }
 

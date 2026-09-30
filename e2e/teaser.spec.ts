@@ -76,8 +76,21 @@ test.describe("page structure", () => {
     )
     await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
       "content",
-      /og-image\.jpg/
+      /share-card\.jpg/
     )
+    await expect(
+      page.locator('meta[property="og:image:width"]')
+    ).toHaveAttribute("content", "1200")
+    await expect(
+      page.locator('meta[property="og:image:height"]')
+    ).toHaveAttribute("content", "627")
+    await expect(page.locator('meta[name="twitter:image"]')).toHaveAttribute(
+      "content",
+      /share-card\.jpg/
+    )
+    const card = await request.get("/teaser/share-card.jpg")
+    expect(card.ok()).toBe(true)
+    expect(card.headers()["content-type"]).toContain("image/jpeg")
     await expect(page.locator('meta[name="twitter:card"]')).toHaveAttribute(
       "content",
       "summary_large_image"

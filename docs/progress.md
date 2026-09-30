@@ -119,7 +119,7 @@ All run locally against this shell, in order:
   or lighter mobile hero image, or accept.
 - **Carousel has no pause control** (your decision). Auto-scrolling content over 5 seconds should
   be pausable under WCAG 2.2.2; see decision 0005.
-- **Open Graph image is a placeholder** (no Figma frame). See `public/teaser/README.md`.
+- **Share card** is `assets/brand/ShareCard.jpg` (1200 x 627), used for Open Graph and Twitter.
 - **"Learn about Raft Design" and the footer link have no destination in Figma.** The code uses
   `https://raftdesign.studio`; confirm it.
 - **Dark surfaces, tag height and button size differ from Figma** where stock components differ;
