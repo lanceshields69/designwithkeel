@@ -6,9 +6,12 @@ import { cn } from "@/lib/utils"
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" })
 
+// Only a couple of mockup lines use the mono font, so it is not preloaded:
+// that keeps it from competing with the hero image on first load.
 const fontMono = Geist_Mono({
   subsets: ["latin"],
   variable: "--font-mono",
+  preload: false,
 })
 
 export default function RootLayout({

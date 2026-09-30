@@ -1,0 +1,32 @@
+# Keel
+
+> Keel creates and maintains a company's brand guide and design system in one connected system. It is a Raft Design product, currently in pre-release with a private beta waitlist. The address is designwithkeel.com; the product is called Keel.
+
+## What Keel is
+
+Share your website, and Keel drafts your brand guide and your design system in minutes. You approve what's right, every finding shows where it came from, and every change Keel suggests waits for your yes. Everyone, including AI tools, then works from the same approved rules.
+
+## What the private beta will include
+
+- Start from a website. Brand files help too.
+- A brand guide: story, voice, logos, color and type.
+- Design foundations: color tokens, type scale, spacing and the core components Keel finds in your live product.
+- A workspace where owners review content, manage assets and update the system.
+- An assistant that answers questions, identifies gaps and proposes changes for you to approve.
+- A shareable living guide that always shows the current version.
+
+## What is planned
+
+- Connecting a Figma library.
+- Connecting a code repository.
+- Instructions for coding agents that build with your approved tokens.
+
+These are not available yet.
+
+## Join the waitlist
+
+Reserve your spot at https://designwithkeel.com/#waitlist
+
+## Contact
+
+Keel is built by Lance Shields, founder of Raft Design.
