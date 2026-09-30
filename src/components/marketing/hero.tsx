@@ -1,8 +1,8 @@
 import { ArrowRight } from "lucide-react"
-import Image from "next/image"
 
 import { Container } from "@/components/layout/container"
 import { HeroCarousel } from "@/components/marketing/hero-carousel"
+import { HeroWater } from "@/components/marketing/hero-water"
 import { SectionTag } from "@/components/marketing/section-tag"
 import { buttonVariants } from "@/components/ui/button"
 import { teaser } from "@/content/teaser"
@@ -11,15 +11,7 @@ function Hero() {
   const { hero } = teaser
   return (
     <section className="relative isolate overflow-hidden bg-foreground py-16 text-primary-foreground md:pt-24 md:pb-24">
-      <Image
-        src="/teaser/hero-water.webp"
-        alt=""
-        fill
-        priority
-        fetchPriority="high"
-        sizes="100vw"
-        className="-z-10 object-cover opacity-60"
-      />
+      <HeroWater />
       {/* The Keel symbol on the water, top right. Decorative: the SVG is an
           alpha mask filled with green 500 at about 50% opacity. It fades in,
           then floats and breathes (see .hero-mark in globals.css). */}
