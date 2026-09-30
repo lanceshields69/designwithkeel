@@ -53,6 +53,9 @@ Then read this file fully before making any change.
 
 ## Rules
 
+- This project uses Base UI (`base-vega` style), not Radix. Run
+  `pnpm dlx shadcn@latest docs <component>` for a component's real API before
+  using it, and use the `render` prop for polymorphism, not `asChild`.
 - Read `docs/product-brief.md`, `docs/architecture.md` and
   `docs/progress.md` at the start of every session.
 - Inspect before editing. Do not rewrite unrelated files.
