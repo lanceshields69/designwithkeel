@@ -30,6 +30,13 @@ export default function RootLayout({
         geist.variable
       )}
     >
+      <head>
+        <script
+          src="https://analytics.ahrefs.com/analytics.js"
+          data-key="t+gZjAwU28tkkBc1Sc/40Q"
+          async
+        />
+      </head>
       <body>
         <ThemeProvider>{children}</ThemeProvider>
       </body>
