@@ -172,6 +172,11 @@ test.describe("hero carousel", () => {
     )
     // 12s of scrolling plus a 3s hold before it starts over.
     expect(duration).toBe("15s")
+    // It waits 1.5s after the slide appears before it starts scrolling.
+    const delay = await img.evaluate(
+      (el) => getComputedStyle(el).animationDelay
+    )
+    expect(delay).toBe("1.5s")
   })
 
   test("does not animate when the visitor prefers reduced motion", async ({
@@ -270,6 +275,28 @@ test.describe("waitlist form", () => {
       page.getByText("Thank you! We'll be in touch shortly.")
     ).toBeVisible()
     expect(calls).toBe(2)
+  })
+
+  test("the choice buttons have 16px side padding and a clear selected state", async ({
+    page,
+  }) => {
+    await page.goto("/")
+    const brand = page.getByRole("button", { name: "Brand system" })
+    const both = page.getByRole("button", { name: "Both" })
+    await expect(brand).toHaveCSS("padding-left", "16px")
+    await expect(brand).toHaveCSS("padding-right", "16px")
+
+    const off = await both.evaluate(
+      (el) => getComputedStyle(el).backgroundColor
+    )
+    await both.click()
+    await expect(both).toHaveAttribute("aria-pressed", "true")
+    const on = await both.evaluate((el) => getComputedStyle(el).backgroundColor)
+    expect(on).not.toBe(off)
+    // Only one can be selected at a time.
+    await brand.click()
+    await expect(brand).toHaveAttribute("aria-pressed", "true")
+    await expect(both).toHaveAttribute("aria-pressed", "false")
   })
 
   test("hides the honeypot from people and screen readers", async ({

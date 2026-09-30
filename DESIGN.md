@@ -107,6 +107,10 @@ Layout helpers, not a second component library:
 `src/components/layout/container.tsx` (width) and `section.tsx` (vertical
 rhythm and background band: `default`, `surface`, `inverse`).
 
+Stock changes made on request: the ToggleGroup "outline" items are white when
+off and black at 5% when selected or hovered, with 16px side padding (Figma
+"Button combo").
+
 Link-buttons: for a link that should look like a button, use
 `<a className={buttonVariants({ ... })}>`. Base UI's `render={<a />}` on
 `Button` adds `role="button"` to the anchor, which is wrong for navigation.
@@ -147,7 +151,7 @@ arbitrary color like `bg-[#22c55e]`, or a raw palette class like
 
 Nothing is animated except: smooth scrolling for the in-page anchor buttons,
 shadcn's small hover/focus transitions, and the hero carousel (a tall guide
-image scrolls, holds 3 seconds, then starts over). All of it is switched off
+image waits 1.5 seconds, scrolls, holds 3 seconds, then starts over). All of it is switched off
 under `prefers-reduced-motion`. See decision 0005.
 
 ## Not built yet

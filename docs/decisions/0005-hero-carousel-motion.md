@@ -15,8 +15,9 @@ should scroll once it is showing, hold for 3 seconds, and start over.
 - The hero preview is a two-slide carousel using shadcn's Carousel
   (`embla-carousel-react`), approved as a new dependency.
 - Slide one is the dashboard image. Slide two is the brand guide page, in the
-  same window; while it is showing it scrolls down over 12 seconds, holds for
-  3 seconds, and starts over (CSS keyframes, 15 seconds in total).
+  same window. When it appears it waits 1.5 seconds, then scrolls down over 12
+  seconds, holds for 3 seconds, and starts over (CSS keyframes, 15 seconds per
+  pass; the 1.5 second wait happens once, when the slide appears).
 - It is the only animation on the page and is an approved exception to the
   no-motion rule.
 - Under `prefers-reduced-motion`, nothing scrolls: slide two sits at the top
