@@ -48,9 +48,9 @@ export const teaser = {
     } satisfies Link,
     slides: [
       {
-        src: "/teaser/hero-dashboard.webp",
-        width: 1912,
-        height: 1250,
+        src: "/teaser/hero-workspace.webp",
+        width: 1359,
+        height: 888,
         alt: 'The Keel workspace for Raft Design. The Overview shows "Your first brand draft is ready" and 3 of 4 sections ready, with Brand foundation, Visual identity and Voice marked Ready and Assets marked Missing. A Raft Assistant panel on the right proposes a revised company description with Apply change and Keep current buttons.',
       },
       {
