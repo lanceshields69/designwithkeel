@@ -130,3 +130,6 @@ All run locally against this shell, in order:
   can read the endpoint from the page source.
 - `pnpm test:e2e` now builds with a fake Formspree address and `SHOW_DESIGN_SYSTEM=true`, and
   honors `PORT` so it never reuses a server that is already running on 3000.
+- **Hero water is a parallax layer.** The water photo and video are fixed to the window and
+  clipped to the hero, so the text scrolls over still water (`hero-water.tsx`). Checked in desktop
+  Chromium only; iPhone Safari with fixed layers still needs a manual look.
